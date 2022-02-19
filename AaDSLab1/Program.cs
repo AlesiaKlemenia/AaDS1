@@ -1,19 +1,17 @@
 ﻿using AaDSLab1;
 
 Console.WriteLine("Enter size of the labyrinth:");
-int n = Convert.ToInt32(Console.ReadLine());
-int m = Convert.ToInt32(Console.ReadLine());
-Console.Write("Enter k: ");
-int k = Convert.ToInt32(Console.ReadLine());
+int lines = Convert.ToInt32(Console.ReadLine());
+int columns = Convert.ToInt32(Console.ReadLine());
 
-Labyrinth field = new Labyrinth(n, m);
+Labyrinth field = new Labyrinth(lines, columns);
 Labyrinth.ReadFromFile(field);
 field.Write();
 
 Stack<Pair> path = new Stack<Pair>();
 
 int successWays = 0;
-for (int j = 0; j < m; j++)
+for (int j = 0; j < columns; j++)
 {
     int i = 0;
     field.Field[i, j].IsVisited = true;
@@ -27,9 +25,9 @@ for (int j = 0; j < m; j++)
             case Direction.DeadEnd:
                 {
                     field.Field[i, j].IsVisited = true;
-                    Pair tmp = path.Pop();
-                    i = tmp.I;
-                    j = tmp.J;
+                    Pair indexes = path.Pop();
+                    i = indexes.I;
+                    j = indexes.J;
                     field.Field[i, j].IsVisited = true;
                     field.Field[i, j].PossibleWaysToGo--;
                     break;
@@ -69,15 +67,20 @@ for (int j = 0; j < m; j++)
             default:
                 {
                     path.Push(new Pair(i, j));
-                    Pair currentIndexes = new Pair(i, j);
-                    while (path.Count() > 0 && field.Field[currentIndexes.I, currentIndexes.J].PossibleWaysToGo == 0)
+                    Pair indexes = new Pair(i, j);
+                    while (path.Count() > 0 && field.Field[indexes.I, indexes.J].PossibleWaysToGo == 0)
                     {
-                        currentIndexes = path.Pop();
-                        field.Field[currentIndexes.I, currentIndexes.J].Value = 1;
+                        indexes = path.Pop();
+                        field.Field[indexes.I, indexes.J].Value = 1;
                     }
                     successWays++;
+                    i++;
                     break;
                 }
+        }
+        if (i == lines)
+        {
+            break;
         }
     }
 }

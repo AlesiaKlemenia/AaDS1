@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AaDSLab1
+﻿namespace AaDSLab1
 {
     class Labyrinth
     {
-        public int Ways { get; set; }
         public int AmountOfLines { get; set; }
         public int AmountOfColumns { get; set; }
         public Cell[,] Field { get; set; }
 
         public Labyrinth(int n, int m)
         {
-            this.Ways = 0;
             this.AmountOfLines = n;
             this.AmountOfColumns = m;
             this.Field = new Cell[n, m];
@@ -52,7 +44,9 @@ namespace AaDSLab1
                 for (int j = 0; j < this.AmountOfColumns; j++)
                 {
                     if (this.Field[i, j].Value == 0)
+                    {
                         this.Field[i, j].PossibleWaysToGo = this.HaveFurtherMoves(i, j);
+                    }
                 }
             }
         }
@@ -75,9 +69,7 @@ namespace AaDSLab1
                 return Direction.Escape;     // escape of the labyrinth
 
             if (i != 0 && this.HaveFurtherMoves(i, j) == 0)
-            {
                 return Direction.DeadEnd;     // tupik (a cho)
-            }
 
             if (j != 0 && this.Field[i, j - 1].Value == 0 && !this.Field[i, j - 1].IsVisited)
                 return Direction.Left;
@@ -87,7 +79,7 @@ namespace AaDSLab1
                 return Direction.Right;
             else if (i != 0 && this.Field[i - 1, j].Value == 0 && !this.Field[i - 1, j].IsVisited)
                 return Direction.Up;
-            return Direction.Down;
+            return Direction.DeadEnd;
         }
 
         private int HaveFurtherMoves(int i, int j)
