@@ -1,6 +1,6 @@
 ﻿namespace AaDSLab1
 {
-    class Labyrinth
+    class Labyrinth : ILabyrinth
     {
         public int AmountOfLines { get; set; }
         public int AmountOfColumns { get; set; }
